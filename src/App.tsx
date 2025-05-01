@@ -41,12 +41,10 @@ function App() {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Set random placeholder based on language
   useEffect(() => {
     setRandomPlaceholder(language);
   }, [language]);
 
-  // Scroll to bottom of chat when messages update
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
