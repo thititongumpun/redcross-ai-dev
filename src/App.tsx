@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ChatMessage from "./components/chat-message";
 import ChatInput from "./components/chat-input";
 import ApiKeyModal from "./components/api-key-modal";
-import TrainingPage from "./components/train-component"; 
+import TrainingPage from "./components/train-component";
 import { Message, ApiResponse } from "./types/types";
 
 const EXAMPLE_QUESTIONS = [
@@ -50,7 +50,7 @@ function App() {
   };
 
   const generateMessageId = (): string => {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    return Date.now().toString(36) + Math.random().toString(36).slice(2);
   };
 
   const handleSendMessage = async (text: string) => {

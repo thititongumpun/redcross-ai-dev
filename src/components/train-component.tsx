@@ -75,7 +75,7 @@ const TrainingPage = () => {
 
       // Make sure the data is in the expected format
       const formattedData: TrainingDataItem[] = data.map((item) => ({
-        id: item.id || `item-${Math.random().toString(36).substr(2, 9)}`,
+        id: item.id || `item-${Math.random().toString(36).slice(2, 9)}`,
         question: item.question || null,
         content: item.content || "",
         training_data_type:
@@ -201,7 +201,6 @@ const TrainingPage = () => {
 
     try {
       const response = await fetch(TRAIN_API_ENDPOINT, {
-        // Using main API endpoint, not /examples
         method: "POST",
         headers: {
           "Content-Type": "application/json",
