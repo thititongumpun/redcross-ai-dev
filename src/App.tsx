@@ -2,27 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import ChatMessage from "./components/chat-message";
 import ChatInput from "./components/chat-input";
 import ApiKeyModal from "./components/api-key-modal";
-import LanguageToggle from "./components/language-toggle";
+import TrainingPage from "./components/train-component"; 
 import { Message, ApiResponse } from "./types/types";
 
-const EXAMPLE_QUESTIONS = {
-  english: [
-    "How many employees do we have?",
-    "Show me the total income by employee",
-    "What is the average salary?",
-    "List the top 10 employees by total income",
-  ],
-  thai: [
-    "เรามีพนักงานทั้งหมดกี่คน?",
-    "แสดงรายได้รวมตามพนักงาน",
-    "เงินเดือนเฉลี่ยเท่าไหร่?",
-    "แสดง 10 อันดับพนักงานที่มีรายได้รวมสูงสุด",
-  ],
-};
+const EXAMPLE_QUESTIONS = [
+  "เรามีพนักงานทั้งหมดกี่คน?",
+  "แสดงรายได้รวมตามพนักงาน",
+  "เงินเดือนเฉลี่ยเท่าไหร่?",
+  "แสดง 10 อันดับพนักงานที่มีรายได้รวมสูงสุด",
+];
 
 const API_ENDPOINT =
-  import.meta.env.VITE_API_ENDPOINT ||
-  "http://localhost:8000/api/v1/ai/question";
+  import.meta.env.VITE_API_ENDPOINT || "http://localhost:8000";
 
 function App() {
   const [messages, setMessages] = useState<Message[]>([
@@ -32,30 +23,25 @@ function App() {
       text: "Hello! I'm your SQL Assistant. Ask me a question about your data, and I'll generate an SQL query to answer it.",
     },
   ]);
-  const [language, setLanguage] = useState<"english" | "thai">("english");
   const [apiKey, setApiKey] = useState<string>("");
   const [showApiKeyModal, setShowApiKeyModal] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [placeholder, setPlaceholder] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<"chat" | "train">("chat");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setRandomPlaceholder(language);
-  }, [language]);
+    setRandomPlaceholder();
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const setRandomPlaceholder = (lang: "english" | "thai") => {
-    const examples = EXAMPLE_QUESTIONS[lang];
-    const randomIndex = Math.floor(Math.random() * examples.length);
-    setPlaceholder(examples[randomIndex]);
-  };
-
-  const handleLanguageChange = (lang: "english" | "thai") => {
-    setLanguage(lang);
+  const setRandomPlaceholder = () => {
+    const randomIndex = Math.floor(Math.random() * EXAMPLE_QUESTIONS.length);
+    setPlaceholder(EXAMPLE_QUESTIONS[randomIndex]);
   };
 
   const handleApiKeySubmit = (key: string) => {
@@ -79,7 +65,7 @@ function App() {
 
     try {
       // Make API request
-      const response = await fetch(API_ENDPOINT, {
+      const response = await fetch(`${API_ENDPOINT}/api/v1/ai/question`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -108,7 +94,7 @@ function App() {
           data: {
             sql: data.sql,
             result: data.result,
-            followup_questions: data.followup_questions.filter((q) => q), // Filter out empty questions
+            followup_questions: data.followup_questions?.filter((q) => q) || [], // Filter out empty questions
           },
         },
       ]);
@@ -143,10 +129,30 @@ function App() {
             SQL Query Assistant
           </h1>
           <div className="flex items-center space-x-4">
-            <LanguageToggle
-              language={language}
-              onLanguageChange={handleLanguageChange}
-            />
+            {/* Navigation */}
+            <nav className="flex space-x-2 mr-4">
+              <button
+                onClick={() => setCurrentPage("chat")}
+                className={`px-3 py-1 rounded-md transition ${
+                  currentPage === "chat"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+                }`}
+              >
+                Chat
+              </button>
+              <button
+                onClick={() => setCurrentPage("train")}
+                className={`px-3 py-1 rounded-md transition ${
+                  currentPage === "train"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+                }`}
+              >
+                Train
+              </button>
+            </nav>
+
             <button
               onClick={() => setShowApiKeyModal(true)}
               className="text-sm bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-md transition"
@@ -157,41 +163,48 @@ function App() {
         </div>
       </header>
 
-      {/* Chat messages container */}
-      <div className="flex-1 overflow-y-auto p-4 max-w-4xl mx-auto w-full">
-        <div className="space-y-4">
-          {messages.map((message) => (
-            <ChatMessage
-              key={message.id}
-              message={message}
-              onFollowupClick={handleFollowupClick}
-            />
-          ))}
-          {isLoading && (
-            <div className="flex items-start">
-              <div className="bg-white rounded-lg p-4 shadow-sm max-w-3xl">
-                <div className="flex space-x-2">
-                  <div className="bg-gray-300 rounded-full h-2 w-2 animate-bounce"></div>
-                  <div className="bg-gray-300 rounded-full h-2 w-2 animate-bounce delay-100"></div>
-                  <div className="bg-gray-300 rounded-full h-2 w-2 animate-bounce delay-200"></div>
+      {/* Main Content */}
+      {currentPage === "chat" ? (
+        <>
+          {/* Chat messages container */}
+          <div className="flex-1 overflow-y-auto p-4 max-w-4xl mx-auto w-full">
+            <div className="space-y-4">
+              {messages.map((message) => (
+                <ChatMessage
+                  key={message.id}
+                  message={message}
+                  onFollowupClick={handleFollowupClick}
+                />
+              ))}
+              {isLoading && (
+                <div className="flex items-start">
+                  <div className="bg-white rounded-lg p-4 shadow-sm max-w-3xl">
+                    <div className="flex space-x-2">
+                      <div className="bg-gray-300 rounded-full h-2 w-2 animate-bounce"></div>
+                      <div className="bg-gray-300 rounded-full h-2 w-2 animate-bounce delay-100"></div>
+                      <div className="bg-gray-300 rounded-full h-2 w-2 animate-bounce delay-200"></div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
+              <div ref={messagesEndRef} />
             </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-      </div>
+          </div>
 
-      {/* Input container */}
-      <div className="border-t border-gray-200 bg-white p-4">
-        <div className="max-w-4xl mx-auto">
-          <ChatInput
-            onSendMessage={handleSendMessage}
-            placeholder={placeholder}
-            disabled={isLoading || showApiKeyModal}
-          />
-        </div>
-      </div>
+          {/* Input container */}
+          <div className="border-t border-gray-200 bg-white p-4">
+            <div className="max-w-4xl mx-auto">
+              <ChatInput
+                onSendMessage={handleSendMessage}
+                placeholder={placeholder}
+                disabled={isLoading || showApiKeyModal}
+              />
+            </div>
+          </div>
+        </>
+      ) : (
+        <TrainingPage />
+      )}
 
       {/* API Key Modal */}
       <ApiKeyModal
