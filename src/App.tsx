@@ -20,7 +20,6 @@ const EXAMPLE_QUESTIONS = {
   ],
 };
 
-// API endpoint from environment variable
 const API_ENDPOINT =
   import.meta.env.VITE_API_ENDPOINT ||
   "http://localhost:8000/api/v1/ai/question";
