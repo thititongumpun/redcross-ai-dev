@@ -583,7 +583,7 @@ const TrainingPage = () => {
                 }`}
                 onClick={() => setActiveTab("example")}
               >
-                Question-SQL Example
+                Question-SQL Pair
               </button>
               <button
                 className={`py-2 px-4 border-b-2 font-medium text-sm ${
