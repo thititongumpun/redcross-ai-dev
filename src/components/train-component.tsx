@@ -1,4 +1,9 @@
 import { useEffect, useState, useRef, useCallback } from "react";
+import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import remarkGfm from "remark-gfm";
+// Import a highlight.js style
+import "highlight.js/styles/stackoverflow-dark.min.css"; // You can choose any style
 
 // Define the API response item interface
 interface ApiTrainingItem {
@@ -540,6 +545,8 @@ const TrainingPage = () => {
     }
   };
 
+  console.log(selectedItem?.content);
+
   return (
     <div className="flex-1 overflow-y-auto p-6 max-w-5xl mx-auto w-full">
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
@@ -722,9 +729,20 @@ const TrainingPage = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Content:
                       </label>
-                      <pre className="p-2 bg-gray-50 rounded-md overflow-x-auto whitespace-pre-wrap font-mono text-sm">
-                        {selectedItem.content}
-                      </pre>
+                      {selectedItem.content.startsWith("# ") ? (
+                          <div className="p-2 bg-gray-50 rounded-md overflow-x-auto">
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm]}
+                              rehypePlugins={[rehypeHighlight]}
+                            >
+                              {selectedItem.content}
+                            </ReactMarkdown>
+                          </div>
+                      ) : (
+                        <pre className="p-2 bg-gray-50 rounded-md overflow-x-auto whitespace-pre-wrap font-mono text-sm">
+                          {selectedItem.content}
+                        </pre>
+                      )}
                     </div>
                     <div className="mt-3 text-xs text-gray-500">
                       Type:{" "}
