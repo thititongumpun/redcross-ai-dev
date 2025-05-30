@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react"; // Import React
 import { Message, renderCell } from "../types/types";
 
 interface MessageProps {
@@ -6,18 +6,32 @@ interface MessageProps {
   onFollowupClick: (question: string) => void;
 }
 
-export default function ChatMessage({
+// Define the component
+const ChatMessage: React.FC<MessageProps> = ({
   message,
   onFollowupClick,
-}: MessageProps) {
+}) => {
   const tableRef = useRef<HTMLDivElement>(null);
 
-  // Render HTML table if provided
+  // Render HTML table if provided (and structured data is not available)
   useEffect(() => {
-    if (message.data?.result?.html_table && tableRef.current) {
-      tableRef.current.innerHTML = message.data.result.html_table;
+    const result = message.data?.result;
+    if (
+      result &&
+      !(result.columns && result.data) && // Only if structured data is NOT present
+      result.html_table &&
+      tableRef.current
+    ) {
+      tableRef.current.innerHTML = result.html_table;
+    } else if (tableRef.current) {
+      // Clear previous innerHTML if conditions are not met
+      tableRef.current.innerHTML = "";
     }
-  }, [message]);
+  }, [
+    message.data?.result?.columns,
+    message.data?.result?.data,
+    message.data?.result?.html_table,
+  ]);
 
   return (
     <div
@@ -26,10 +40,10 @@ export default function ChatMessage({
       }`}
     >
       <div
-        className={`rounded-lg p-4 max-w-3xl ${
+        className={`p-4 max-w-3xl ${
           message.type === "user"
-            ? "bg-blue-600 text-white"
-            : "bg-white shadow-sm"
+            ? "bg-blue-600 text-white rounded-xl shadow-md"
+            : "bg-white shadow-sm rounded-xl border border-gray-200"
         }`}
       >
         {/* Message text */}
@@ -41,8 +55,8 @@ export default function ChatMessage({
             <h4 className="text-sm font-medium text-gray-500 mb-1">
               SQL Query:
             </h4>
-            <pre className="bg-gray-100 p-3 rounded text-xs overflow-x-auto text-gray-800">
-              {message.data.sql}
+            <pre className="bg-gray-800 text-gray-100 p-4 rounded-md text-xs overflow-x-auto language-sql">
+              <code>{message.data.sql}</code>
             </pre>
           </div>
         )}
@@ -51,39 +65,35 @@ export default function ChatMessage({
         {message.data?.result && (
           <div className="mt-4">
             <h4 className="text-sm font-medium text-gray-500 mb-1">Results:</h4>
-            {message.data.result.html_table ? (
-              <div
-                ref={tableRef}
-                className="overflow-x-auto bg-gray-50 p-2 rounded border border-gray-200 text-gray-800 text-sm"
-              />
-            ) : message.data.result.columns && message.data.result.data ? (
-              <div className="overflow-x-auto bg-gray-50 p-2 rounded border border-gray-200">
-                <table className="min-w-full divide-y divide-gray-200 text-sm">
-                  <thead>
+            {message.data.result.columns && message.data.result.data ? (
+              // **Priority 1: Structured Data Table**
+              <div className="overflow-x-auto bg-white p-2 rounded-md border border-gray-300 shadow-sm">
+                <table className="min-w-full text-sm border-collapse">
+                  <thead className="bg-slate-100">
                     <tr>
                       {message.data.result.columns.map((column, i) => (
                         <th
                           key={i}
-                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider border-b-2 border-slate-200"
                         >
                           {column}
                         </th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-slate-200">
                     {message.data.result.data.map((row, rowIndex) => (
                       <tr
                         key={rowIndex}
                         className={
-                          rowIndex % 2 === 0 ? "bg-white" : "bg-gray-50"
+                          rowIndex % 2 === 0 ? "bg-white" : "bg-slate-50"
                         }
                       >
                         {Array.isArray(row) &&
                           row.map((cell, cellIndex) => (
                             <td
                               key={cellIndex}
-                              className="px-3 py-2 whitespace-nowrap text-gray-500"
+                              className="px-4 py-3 whitespace-nowrap text-slate-600 border-b border-slate-100"
                             >
                               {renderCell(cell)}
                             </td>
@@ -93,6 +103,13 @@ export default function ChatMessage({
                   </tbody>
                 </table>
               </div>
+            ) : message.data.result.html_table ? (
+              // **Priority 2: HTML Table (Fallback)**
+              <div
+                ref={tableRef}
+                className="overflow-x-auto bg-gray-50 p-3 rounded-md border border-gray-300 text-gray-800 text-sm shadow-sm"
+                /* useEffect will populate this if this path is taken */
+              />
             ) : null}
           </div>
         )}
@@ -109,7 +126,7 @@ export default function ChatMessage({
                   <button
                     key={index}
                     onClick={() => onFollowupClick(question)}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded-full text-sm transition"
+                    className="bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium px-3 py-1 rounded-full text-sm transition shadow-sm hover:shadow-md"
                   >
                     {question}
                   </button>
@@ -120,4 +137,7 @@ export default function ChatMessage({
       </div>
     </div>
   );
-}
+};
+
+// Export the memoized component
+export default React.memo(ChatMessage);

@@ -38,9 +38,9 @@ export default function ChatInput({
           placeholder={placeholder}
           rows={1}
           disabled={disabled}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-500 resize-none transition-colors duration-150 ease-in-out"
           style={{
-            minHeight: "56px",
+            minHeight: "50px", // Adjusted minHeight
             maxHeight: "200px",
           }}
         />
@@ -48,7 +48,7 @@ export default function ChatInput({
       <button
         type="submit"
         disabled={!message.trim() || disabled}
-        className={`px-4 py-3 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+        className={`px-4 h-[50px] flex items-center justify-center rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-150 ease-in-out ${
           !message.trim() || disabled
             ? "bg-gray-300 text-gray-500 cursor-not-allowed"
             : "bg-blue-600 text-white hover:bg-blue-700"

@@ -81,7 +81,7 @@ export default function ApiKeyModal({
               id="apiKey"
               value={inputApiKey}
               onChange={(e) => setInputApiKey(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition-colors duration-150 ease-in-out"
               placeholder="Enter your API key"
               autoFocus
             />
@@ -93,7 +93,7 @@ export default function ApiKeyModal({
               id="rememberKey"
               checked={rememberKey}
               onChange={(e) => setRememberKey(e.target.checked)}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-blue-600 focus:ring-blue-400 border-gray-300 rounded transition-colors duration-150 ease-in-out"
             />
             <label
               htmlFor="rememberKey"
@@ -108,7 +108,7 @@ export default function ApiKeyModal({
               <button
                 type="button"
                 onClick={handleClearAndClose}
-                className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors duration-150 ease-in-out"
               >
                 Clear & Cancel
               </button>
@@ -116,10 +116,10 @@ export default function ApiKeyModal({
             <button
               type="submit"
               disabled={!inputApiKey.trim()}
-              className={`px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`px-4 py-2 rounded-md focus:outline-none focus:ring-2 transition-colors duration-150 ease-in-out ${
                 !inputApiKey.trim()
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-blue-600 text-white hover:bg-blue-700"
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed focus:ring-gray-400"
+                  : "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-400"
               }`}
             >
               Submit
