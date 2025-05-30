@@ -432,7 +432,7 @@ const TrainingPage = () => {
                 </label>
                 <textarea
                   ref={questionRef}
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition-colors duration-150 ease-in-out"
                   rows={3}
                   placeholder="Enter a natural language question..."
                   disabled={isSubmitting}
@@ -444,7 +444,7 @@ const TrainingPage = () => {
                 </label>
                 <textarea
                   ref={sqlQueryRef}
-                  className="w-full p-2 border border-gray-300 rounded-md font-mono"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition-colors duration-150 ease-in-out"
                   rows={3}
                   placeholder="Enter the corresponding SQL query..."
                   disabled={isSubmitting}
@@ -452,7 +452,7 @@ const TrainingPage = () => {
               </div>
             </div>
             <button
-              className={`mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md ${
+              className={`mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-150 ease-in-out ${
                 isSubmitting ? "opacity-70 cursor-not-allowed" : ""
               }`}
               onClick={handleAddTrainingExample}
@@ -471,14 +471,14 @@ const TrainingPage = () => {
               </label>
               <textarea
                 ref={ddlRef}
-                className="w-full p-2 border border-gray-300 rounded-md font-mono"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition-colors duration-150 ease-in-out"
                 rows={6}
                 placeholder="Enter a DDL statement (e.g., CREATE TABLE my_table ...)..."
                 disabled={isSubmitting}
               ></textarea>
             </div>
             <button
-              className={`mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md ${
+              className={`mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-150 ease-in-out ${
                 isSubmitting ? "opacity-70 cursor-not-allowed" : ""
               }`}
               onClick={handleAddDDL}
@@ -497,14 +497,14 @@ const TrainingPage = () => {
               </label>
               <textarea
                 ref={sqlRef}
-                className="w-full p-2 border border-gray-300 rounded-md font-mono"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition-colors duration-150 ease-in-out"
                 rows={6}
                 placeholder="Enter a SQL query (e.g., SELECT * FROM employees WHERE ...)..."
                 disabled={isSubmitting}
               ></textarea>
             </div>
             <button
-              className={`mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md ${
+              className={`mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-150 ease-in-out ${
                 isSubmitting ? "opacity-70 cursor-not-allowed" : ""
               }`}
               onClick={handleAddSQL}
@@ -523,14 +523,14 @@ const TrainingPage = () => {
               </label>
               <textarea
                 ref={documentationRef}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition-colors duration-150 ease-in-out"
                 rows={6}
                 placeholder="Enter documentation about your database, business rules, or domain knowledge..."
                 disabled={isSubmitting}
               ></textarea>
             </div>
             <button
-              className={`mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md ${
+              className={`mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-150 ease-in-out ${
                 isSubmitting ? "opacity-70 cursor-not-allowed" : ""
               }`}
               onClick={handleAddDocumentation}
@@ -583,7 +583,7 @@ const TrainingPage = () => {
           <div className="border-b border-gray-200 mb-4">
             <nav className="flex -mb-px">
               <button
-                className={`py-2 px-4 border-b-2 font-medium text-sm ${
+                className={`py-2 px-4 border-b-2 font-medium text-sm transition-colors duration-150 ease-in-out focus:outline-none focus:ring-1 focus:ring-blue-400 ${
                   activeTab === "example"
                     ? "border-blue-500 text-blue-600"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -593,7 +593,7 @@ const TrainingPage = () => {
                 Question-SQL Pair
               </button>
               <button
-                className={`py-2 px-4 border-b-2 font-medium text-sm ${
+                className={`py-2 px-4 border-b-2 font-medium text-sm transition-colors duration-150 ease-in-out focus:outline-none focus:ring-1 focus:ring-blue-400 ${
                   activeTab === "ddl"
                     ? "border-blue-500 text-blue-600"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -603,7 +603,7 @@ const TrainingPage = () => {
                 DDL Statement
               </button>
               <button
-                className={`py-2 px-4 border-b-2 font-medium text-sm ${
+                className={`py-2 px-4 border-b-2 font-medium text-sm transition-colors duration-150 ease-in-out focus:outline-none focus:ring-1 focus:ring-blue-400 ${
                   activeTab === "sql"
                     ? "border-blue-500 text-blue-600"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -613,7 +613,7 @@ const TrainingPage = () => {
                 SQL Query
               </button>
               <button
-                className={`py-2 px-4 border-b-2 font-medium text-sm ${
+                className={`py-2 px-4 border-b-2 font-medium text-sm transition-colors duration-150 ease-in-out focus:outline-none focus:ring-1 focus:ring-blue-400 ${
                   activeTab === "documentation"
                     ? "border-blue-500 text-blue-600"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -635,7 +635,7 @@ const TrainingPage = () => {
             <h3 className="text-lg font-semibold">Training Data</h3>
             <div className="flex space-x-2">
               <select
-                className="border border-gray-300 rounded-md p-1 text-sm"
+                className="border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition-colors duration-150 ease-in-out"
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value)}
               >
@@ -647,7 +647,7 @@ const TrainingPage = () => {
               </select>
               <button
                 onClick={fetchTrainingData}
-                className="text-xs bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-md"
+                className="text-xs bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors duration-150 ease-in-out"
                 disabled={isLoading}
               >
                 {isLoading ? "Refreshing..." : "Refresh"}
@@ -703,7 +703,7 @@ const TrainingPage = () => {
                 {selectedItem && (
                   <button
                     onClick={() => handleDeleteItem(selectedItem.id)}
-                    className={`text-xs text-red-600 hover:text-red-800 px-2 py-1 rounded-md ${
+                    className={`text-xs text-red-600 hover:text-red-800 px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 transition-colors duration-150 ease-in-out ${
                       isDeleting ? "opacity-70 cursor-not-allowed" : ""
                     }`}
                     disabled={isDeleting}
